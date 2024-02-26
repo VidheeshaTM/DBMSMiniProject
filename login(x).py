@@ -1,55 +1,60 @@
-import tkinter as tk
-from tkinter import messagebox
+from tkinter import *
 from PIL import Image, ImageTk
 
-def validate_login():
-    username = username_entry.get()
-    password = password_entry.get()
+class LoginWindow:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("CriminalRecords-LOGIN")
+        self.root.geometry("1550x800+0+0")
 
-    # Dummy validation - You should replace this with actual authentication logic
-    if username == "admin" and password == "password":
-        # If login successful, show a message box
-        messagebox.showinfo("Login Successful", "Welcome, " + username + "!")
-    else:
-        # If login failed, show an error message box
-        messagebox.showerror("Login Failed", "Invalid username or password")
+        # Background image
+        self.bg = ImageTk.PhotoImage(file=r"C:\Users\Vidheesha T M\Desktop\DBMSMiniProject\rapunzels room.jpg")
+        lbl_bg = Label(self.root, image=self.bg)
+        lbl_bg.place(x=0, y=0, relwidth=1, relheight=1)
 
-# Create the main window
-root = tk.Tk()
-root.title("CRIMINAL RECORDS SYSTEM MANAGEMENT-Login")
+        # Create a login frame
+        frame = Frame(self.root, bg="black")
+        frame.place(x=610, y=170, width=340, height=450)
 
-# Load the image
-image = Image.open(r"C:\Users\Vidheesha T M\Downloads\ice bear.jpg")
-photo = ImageTk.PhotoImage(image)
+        # Username label and entry
+        lbl_username = Label(frame, text="Username", fg="white", bg="black")
+        lbl_username.pack(pady=10)
+        self.username_entry = Entry(frame)
+        self.username_entry.pack()
 
-# Create a label for the image
-image_label = tk.Label(root, image=photo)
-image_label.pack()
+        # Password label and entry
+        lbl_password = Label(frame, text="Password", fg="white", bg="black")
+        lbl_password.pack(pady=10)
+        self.password_entry = Entry(frame, show="*")
+        self.password_entry.pack()
 
-# Create a frame in the middle
-middle_frame = tk.Frame(root)
-middle_frame.pack(pady=20)
+        # Login button
+        login_btn = Button(frame, text="Login", command=self.login)
+        login_btn.pack(pady=20)
 
-# Username Label and Entry
-username_label = tk.Label(middle_frame, text="Username:")
-username_label.grid(row=0, column=0, sticky="w")
-username_entry = tk.Entry(middle_frame)
-username_entry.grid(row=0, column=1)
+        # Label to display login status
+        self.login_status_label = Label(frame, text="", fg="white", bg="black")
+        self.login_status_label.pack()
 
-# Password Label and Entry
-password_label = tk.Label(middle_frame, text="Password:")
-password_label.grid(row=1, column=0, sticky="w")
-password_entry = tk.Entry(middle_frame, show="*")
-password_entry.grid(row=1, column=1)
+    def login(self):
+        # Debugging: Check if the method is called
+        print("Login method called")
 
-# Frame for the login button
-button_frame = tk.Frame(middle_frame)
-button_frame.grid(row=2, columnspan=2)
+        # Retrieve username and password
+        username = self.username_entry.get()
+        password = self.password_entry.get()
 
-# Login Button
-login_button = tk.Button(button_frame, text="Login", command=validate_login)
-login_button.pack()
+        # Debugging: Check retrieved values
+        print("Username:", username)
+        print("Password:", password)
 
-# Run the Tkinter main loop
-root.mainloop()
+        # Example: Check if username and password are valid
+        if username == "admin" and password == "secret":
+            self.login_status_label.config(text="Login successful", fg="green")
+        else:
+            self.login_status_label.config(text="Invalid credentials", fg="red")
 
+if __name__ == "__main__":
+    root = Tk()
+    app = LoginWindow(root)
+    root.mainloop()
